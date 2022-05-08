@@ -1,10 +1,10 @@
-setwd("~/Desktop/SiliconFinalProject/code")
+setwd("~/Desktop/Github/Test/Silicon/code")
 
 library(tidyverse)
 library(igraph)
 library(networkD3)
 
-list.files('../raw_wbdata')
+list.files('../raw_data')
 
 pop <- read_csv('../raw_data/population/pop.csv',
          show_col_types = FALSE) %>% 
@@ -12,7 +12,7 @@ pop <- read_csv('../raw_data/population/pop.csv',
 
 names(pop) <- c('CountryName', 'CountryCode','2017','2018','2019', '2020')
 
-list.files('../raw_wbdata/world')
+list.files('../raw_data/world')
 
 eap <- read_csv('../raw_data/world/eastasiapacific.csv')
 mena <- read_csv('../raw_data/world/middleeastnorthafrica.csv')
@@ -33,7 +33,7 @@ pop <- pop %>%
   mutate(region = if_else(region %in% ssa$CountryCode, 'subsaharianafrica', region)) %>% 
   filter(nchar(region) > 3)
 
-list.files()
+pop
 
 get_income <- function(text){
   file = read_csv(text)
@@ -56,8 +56,7 @@ my_csv <- pop %>%
   mutate(income = if_else(income %in% highincome, 'high', income)) %>%
   mutate(income = if_else(income %in% lowincome, 'low', income)) %>% 
   mutate(income = if_else(income %in% uppermiddle, 'uppermiddle', income)) %>% 
-  arrange(CountryName) %>% 
-  print(n=Inf)
+  arrange(CountryName) 
 
 # write.csv(my_csv, '../processed_data/income/countries.csv', row.names = FALSE)
 
@@ -67,6 +66,7 @@ sd <- read_csv('../raw_data/comtrade/silicon_dioxide.csv') %>%
   select(`Reporter ISO`, `Partner ISO`, Qty, `Trade Value (US$)`) %>% 
   rename(ReporterISO=`Reporter ISO`,PartnerISO=`Partner ISO`, 
          Value =`Trade Value (US$)`) %>% drop_na()
+
 gg <- igraph::graph_from_data_frame(sd, directed = FALSE)
 
 print_all(gg)
