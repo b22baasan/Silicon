@@ -216,3 +216,31 @@ updated_main <- main %>%
 
 updated_main %>% 
   print(n= Inf)
+
+
+# market cap for largest semiconductor companies
+list.files('../raw_data/')
+
+top_foundries <- read_csv('../raw_data/LargeCompaniesMarketCap.csv')[-1, ] %>% 
+  rename(rank = 1, name = 2, symbol = 3, marketcap=4, price=5, country = 6) %>% 
+  mutate(CountryCode = country) %>% 
+  mutate(CountryCode = ifelse(CountryCode == 'United States', 'USA', CountryCode)) %>% 
+  mutate(CountryCode = ifelse(CountryCode == 'Taiwan', 'TWN', CountryCode)) %>% 
+  mutate(CountryCode = ifelse(CountryCode == 'South Korea', 'KOR', CountryCode)) %>% 
+  mutate(CountryCode = ifelse(CountryCode == 'Netherlands', 'NED', CountryCode)) %>% 
+  mutate(CountryCode = ifelse(CountryCode == 'Japan', 'JPN', CountryCode)) %>% 
+  mutate(CountryCode = ifelse(CountryCode == 'Germany', 'DEU', CountryCode)) %>%
+  mutate(CountryCode = ifelse(CountryCode == 'Switzerland', 'CHE', CountryCode)) %>%
+  mutate(CountryCode = ifelse(CountryCode == 'China', 'CHN', CountryCode)) %>%
+  mutate(CountryCode = ifelse(CountryCode == 'Germany', 'DEU', CountryCode)) %>%
+  mutate(CountryCode = ifelse(CountryCode == 'France', 'FRA', CountryCode)) %>%
+  mutate(CountryCode = ifelse(CountryCode == 'Hong Kong', 'HKG', CountryCode)) %>%
+  mutate(CountryCode = ifelse(CountryCode == 'Norway', 'NOR', CountryCode)) %>%
+  mutate(CountryCode = ifelse(CountryCode == 'Singapore', 'SGP', CountryCode)) %>%
+  mutate(CountryCode = ifelse(CountryCode == 'United Kingdom', 'GRB', CountryCode)) %>%
+  mutate(CountryCode = ifelse(CountryCode == 'Australia', 'AUS', CountryCode)) %>%
+  mutate(CountryCode = ifelse(CountryCode == 'Ireland', 'IRL', CountryCode)) %>%
+  mutate(CountryCode = ifelse(CountryCode == 'Israel', 'ISR', CountryCode)) %>%
+  mutate(CountryCode = ifelse(CountryCode == 'Luxembourg', 'LUX', CountryCode)) 
+
+
