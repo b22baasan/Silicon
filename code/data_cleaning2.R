@@ -221,6 +221,7 @@ updated_main %>%
 # market cap for largest semiconductor companies
 list.files('../raw_data/')
 
+# world top eight foundries and its marketcap 
 top_foundries <- read_csv('../raw_data/LargeCompaniesMarketCap.csv')[-1, ] %>% 
   rename(rank = 1, name = 2, symbol = 3, marketcap=4, price=5, country = 6) %>% 
   mutate(CountryCode = country) %>% 
@@ -243,4 +244,14 @@ top_foundries <- read_csv('../raw_data/LargeCompaniesMarketCap.csv')[-1, ] %>%
   mutate(CountryCode = ifelse(CountryCode == 'Israel', 'ISR', CountryCode)) %>%
   mutate(CountryCode = ifelse(CountryCode == 'Luxembourg', 'LUX', CountryCode)) 
 
+
+top_foundries_dist <- top_foundries %>% 
+  mutate(marketcap = as.numeric(marketcap)) %>% 
+  mutate(price = as.numeric(price)) %>% 
+  count(CountryCode) %>% 
+  arrange(desc(n)) %>% 
+  ggplot(aes(x=reorder(CountryCode, -n), y = n)) +
+  geom_bar(stat='identity')+
+  labs(title = 'Largest Semiconductor Companies by Market Cap')+
+  xlab('Country') + ylab('Total Count')
 
