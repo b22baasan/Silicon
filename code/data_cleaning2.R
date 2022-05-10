@@ -7,7 +7,7 @@
 # check wd 
 getwd()
 
-# check files and wd level
+ # check files and wd level
 list.files('../')
 
 library(tidyverse)
@@ -51,62 +51,62 @@ main <- read_csv('../raw_data/world/countries.csv')
 
 library(igraph)
 
-sd_graph <- graph_from_data_frame(sd, directed = FALSE)
-sp_graph <- graph_from_data_frame(sp, directed = FALSE)
-wf_graph <- graph_from_data_frame(wf, directed = FALSE)
-
-plot(sd_graph, min_freq = 0.1, edge_alpha = 0.1, edge_size = 5, 
-     vertex.size=3, vertex.label.size=1)
-
-# silicon dioxide
-SD <- as.data.frame(igraph::degree(sd_graph, mode='all'))
-SD$betweenness <- igraph::betweenness(sd_graph)
-SD$eigen <- igraph::eigen_centrality(sd_graph)$vector
-
-# qty 
-sd_table <- sd %>%
-  group_by(sd_reporter_iso) %>% 
-  summarise(sd_qty = sum(sd_qty)) %>% 
-  mutate(CountryCode = sd_reporter_iso) %>% 
-  select(CountryCode, sd_qty)
-
-# sd value
-sd_tibble <- sd %>%
-  group_by(sd_reporter_iso) %>% 
-  summarise(sd_value = sum(sd_value)) %>% 
-  mutate(CountryCode = sd_reporter_iso) %>% 
-  inner_join(sd_table, by = 'CountryCode') %>% 
-  select(CountryCode, sd_qty, sd_value)
-
-class(sd_tibble)
-
-names(SD) <- c('sd_degree', 'sd_betweenness', 'sd_eigen')
-SD$CountryCode <- row.names(SD)
-
-SD_tibble <- SD %>% 
-  inner_join(sd_tibble, by = 'CountryCode') %>% 
-  select(CountryCode, sd_qty, sd_value, sd_degree, sd_betweenness, sd_eigen)
-
-SD_tibble %>% 
-  ggplot(aes(x=sd_qty, y=sd_value, fill = sd_degree))+
-  geom_point(alpha = .2, )
-
-help(geom_point)
-
-# silicon in primary forms
-SP <- as.data.frame(igraph::degree(sp_graph, mode='all'))
-SP$betweenness <- igraph::betweenness(sp_graph)
-SP$eigen <- igraph::eigen_centrality(sp_graph)$vector
-names(SP) <- c('sp_degree', 'sp_betweenness', 'sp_eigen')
-SP$CountryCode <- row.names(SP)
-
-# wafer
-WF <- as.data.frame(igraph::degree(wf_graph, mode='all'))
-WF$betweenness <- igraph::betweenness(wf_graph)
-WF$eigen <- igraph::eigen_centrality(wf_graph)$vector
-names(WF) <- c('wf_degree', 'wf_betweenness', 'wf_eigen')
-WF$CountryCode <- row.names(WF)
-
+#sd_graph <- graph_from_data_frame(sd, directed = FALSE)
+#sp_graph <- graph_from_data_frame(sp, directed = FALSE)
+#wf_graph <- graph_from_data_frame(wf, directed = FALSE)
+#
+#plot(sd_graph, min_freq = 0.1, edge_alpha = 0.1, edge_size = 5, 
+#     vertex.size=3, vertex.label.size=1)
+#
+## silicon dioxide
+#SD <- as.data.frame(igraph::degree(sd_graph, mode='all'))
+#SD$betweenness <- igraph::betweenness(sd_graph)
+#SD$eigen <- igraph::eigen_centrality(sd_graph)$vector
+#
+## qty 
+#sd_table <- sd %>%
+#  group_by(sd_reporter_iso) %>% 
+#  summarise(sd_qty = sum(sd_qty)) %>% 
+#  mutate(CountryCode = sd_reporter_iso) %>% 
+#  select(CountryCode, sd_qty)
+#
+## sd value
+#sd_tibble <- sd %>%
+#  group_by(sd_reporter_iso) %>% 
+#  summarise(sd_value = sum(sd_value)) %>% 
+#  mutate(CountryCode = sd_reporter_iso) %>% 
+#  inner_join(sd_table, by = 'CountryCode') %>% 
+#  select(CountryCode, sd_qty, sd_value)
+#
+#class(sd_tibble)
+#
+#names(SD) <- c('sd_degree', 'sd_betweenness', 'sd_eigen')
+#SD$CountryCode <- row.names(SD)
+#
+#SD_tibble <- SD %>% 
+#  inner_join(sd_tibble, by = 'CountryCode') %>% 
+#  select(CountryCode, sd_qty, sd_value, sd_degree, sd_betweenness, sd_eigen)
+#
+#SD_tibble %>% 
+#  ggplot(aes(x=sd_qty, y=sd_value, fill = sd_degree))+
+#  geom_point(alpha = .2, )
+#
+#help(geom_point)
+#
+## silicon in primary forms
+#SP <- as.data.frame(igraph::degree(sp_graph, mode='all'))
+#SP$betweenness <- igraph::betweenness(sp_graph)
+#SP$eigen <- igraph::eigen_centrality(sp_graph)$vector
+#names(SP) <- c('sp_degree', 'sp_betweenness', 'sp_eigen')
+#SP$CountryCode <- row.names(SP)
+#
+## wafer
+#WF <- as.data.frame(igraph::degree(wf_graph, mode='all'))
+#WF$betweenness <- igraph::betweenness(wf_graph)
+#WF$eigen <- igraph::eigen_centrality(wf_graph)$vector
+#names(WF) <- c('wf_degree', 'wf_betweenness', 'wf_eigen')
+#WF$CountryCode <- row.names(WF)
+#
 # returns a table contains sd (silicon dioxide) aggregate data
 sd_table <- function(df){
   # iso and qty
@@ -210,12 +210,16 @@ updated_main <- main %>%
   full_join(dioxide, by = 'CountryCode') %>% 
   full_join(primary, by = 'CountryCode') %>% 
   full_join(wafers, by = 'CountryCode') %>% 
-  select(CountryName, CountryCode, sd_degree, sd_betweenness, sd_eigen,
-         sp_degree, sp_betweenness, sp_eigen,
-         wf_degree, wf_betweenness, wf_eigen, region, income)
+  select(CountryName, CountryCode, 
+         sd_degree, sd_betweenness, sd_eigen, sd_qty, sd_value,
+         sp_degree, sp_betweenness, sp_eigen, sp_qty, sp_value,
+         wf_degree, wf_betweenness, wf_eigen, wf_qty, wf_value,
+         region, income)
 
 updated_main %>% 
-  print(n= Inf)
+  filter(CountryCode == 'TWN')
+  drop_na() %>%  
+  print(n=Inf)
 
 
 # market cap for largest semiconductor companies
@@ -253,5 +257,21 @@ top_foundries_dist <- top_foundries %>%
   ggplot(aes(x=reorder(CountryCode, -n), y = n)) +
   geom_bar(stat='identity')+
   labs(title = 'Largest Semiconductor Companies by Market Cap')+
-  xlab('Country') + ylab('Total Count')
+  xlab('Country') + ylab('Total Count of Semiconductor Companies')
 
+#final <- updated_main %>% 
+  #drop_na() %>% 
+  #mutate(type = CountryCode) %>% 
+  #select(-c(CountryName, CountryCode)) %>% 
+  #mutate(type = ifelse(type %in% c('CHN', 'TWN', 'KOR'), 'foundry', 'fab')) %>% 
+  #mutate(type = as.factor(type)) %>%
+  #mutate(region = as.factor(region)) %>% 
+  #mutate(income = as.factor(income))
+
+
+sp %>% 
+  #filter(sp_reporter_iso == 'TWN') #%>% 
+  filter(sp_partner_iso == 'TWN')
+
+wf %>% 
+  filter(wf_partner_iso == 'TWN')
