@@ -217,7 +217,10 @@ updated_main <- main %>%
          region, income)
 
 updated_main %>% 
+<<<<<<< HEAD
   filter(CountryCode == 'TWN')
+=======
+>>>>>>> 64de65ca74de3cd45e840060f551e8448e0dc00b
   drop_na() %>%  
   print(n=Inf)
 
@@ -258,6 +261,7 @@ top_foundries_dist <- top_foundries %>%
   geom_bar(stat='identity')+
   labs(title = 'Largest Semiconductor Companies by Market Cap')+
   xlab('Country') + ylab('Total Count of Semiconductor Companies')
+<<<<<<< HEAD
 
 #final <- updated_main %>% 
   #drop_na() %>% 
@@ -275,3 +279,8 @@ sp %>%
 
 wf %>% 
   filter(wf_partner_iso == 'TWN')
+=======
+
+updated_main %>% 
+  names()
+>>>>>>> 64de65ca74de3cd45e840060f551e8448e0dc00b
