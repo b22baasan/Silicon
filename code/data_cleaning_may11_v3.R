@@ -106,7 +106,6 @@ sp %>%
 
 primary <- sd_table(sp, 2017)
 
-
 #####################################################################
 list.files('../raw_data/comtrade')
 
@@ -130,11 +129,12 @@ wafers <- sd_table(wf, 2017)
 
 
 ###########################################################################
-list.files('../raw_data/comtrade')
+list.files('../')
 
-main <- read_csv('../raw_data/comtrade/countries.csv') %>% 
-  select(CountryCode, `2017`) %>% 
-  rename('pop' = `2017`)
+main <- read_csv('../pop.csv') %>% 
+  rename(CountryCode = `Country Code`,
+         pop = `2017`) %>% 
+  select(CountryCode, pop)
 
 names(dioxide) <- c('CountryCode','d_qty','d_val','d_dgre','d_betw','d_eigen')
 names(primary) <- c('CountryCode','p_qty','p_val','p_dgre','p_betw','p_eigen')
@@ -144,6 +144,6 @@ main %>%
   full_join(dioxide, by = 'CountryCode') %>% 
   full_join(primary, by = 'CountryCode') %>% 
   full_join(wafers, by = 'CountryCode') %>% 
-  #drop_na() %>%
+  drop_na() %>%
   arrange(CountryCode) %>% 
   print(n=Inf)
