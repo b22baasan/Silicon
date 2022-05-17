@@ -77,4 +77,5 @@ fabs <- myfabs %>%
   mutate(CountryCode = ifelse(CountryCode == 'Mexico', 'MEX', CountryCode)) %>%
   mutate(CountryCode = ifelse(CountryCode == 'Switzerland', 'CHE', CountryCode)) 
 
-fabs %>% group_by(CountryCode) %>% count(tech_prod) %>% arrange(desc(n))
+fabs %>% group_by(CountryCode) %>% count(tech_prod) %>% # arrange(desc(n)) %>% 
+  count(CountryCode) %>% arrange(desc(n)) %>% print(n=Inf) 
