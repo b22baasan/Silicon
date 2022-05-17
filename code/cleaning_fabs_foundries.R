@@ -47,8 +47,18 @@ top_foundries_dist <- top_foundries %>%
 updated_main <- year2017 %>% 
   mutate(type = CountryCode) %>% 
   #select(-c(CountryName, CountryCode)) %>% 
-  mutate(type = ifelse(type %in% c('CHN', 'TWN', 'KOR'), 'fab', 'foundry')) %>% 
-  mutate(type = as.factor(type)) 
+  mutate(type = ifelse(type %in% c('CHN', 'TWN', 'KOR'), 1, 2)) #%>% 
+  #mutate(type = as.factor(type)) 
+
+
+updated_2020_USA <- year2020 %>% 
+  mutate(type = CountryCode) %>% 
+  #select(-c(CountryName, CountryCode)) %>% 
+  mutate(type = ifelse(type %in% c('CHN', 'TWN', 'KOR', 'USA'), 1, 2)) #%>% 
+#mutate(type = as.factor(type)) 
+
+
+updated_main %>% str()
 
 companies_cap <- top_foundries %>% 
   mutate(marketcap = as.numeric(marketcap)) %>% 
