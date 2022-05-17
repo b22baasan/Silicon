@@ -34,4 +34,27 @@ kernfit <- ksvm(x[train,], y[train], type = "C-svc", kernel = 'rbfdot',
 plot(kernfit, data = x[train,])
 
 
+#####################################################################
+# include USA
+x <- scale(updated_2020_USA[,16:17], center = TRUE, scale = TRUE) 
+y <- updated_2020_USA$type
 
+
+
+dat <- data.frame(x=x, y = as.factor(y))
+dat %>% str()
+
+# sample training data and fit model
+train <- base::sample(1:nrow(dat),25, replace = FALSE)
+svmfit <- svm(y ~ ., data = dat[train,], 
+              kernel = "radial", gamma = 1, cost = 1)
+# plot classifier
+plot(svmfit, dat)
+
+
+# Fit radial-based SVM in kernlab
+kernfit <- ksvm(x[train,], y[train], type = "C-svc", kernel = 'rbfdot', 
+                C = 1, scaled = c())
+# Plot training data
+plot(kernfit, data = x[train,], 
+     main = "USA included in the Fabs")
