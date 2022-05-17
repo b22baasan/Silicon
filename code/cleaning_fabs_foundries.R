@@ -53,8 +53,9 @@ updated_main <- year2017 %>%
 companies_cap <- top_foundries %>% 
   mutate(marketcap = as.numeric(marketcap)) %>% 
   group_by(CountryCode) %>% 
-  summarise(cap = sum(marketcap))
+  summarise(cap = sum(marketcap)) 
 
+  
 num_companies <- top_foundries %>% 
   mutate(marketcap = as.numeric(marketcap)) %>% 
   mutate(price = as.numeric(price)) %>% 
@@ -65,3 +66,23 @@ final <- updated_main %>%
   full_join(num_companies, by='CountryCode') %>% 
   rename(num_firms = n)
 
+final.table <- final %>% group_by(type) %>% summarise(n=sum(w_qty)) %>% 
+  drop_na()
+
+final.table %>% 
+  mutate(prop = n / sum(n))
+
+# csv files for Tableau presentation
+top_foundries %>% 
+  mutate(marketcap = as.numeric(marketcap)) %>% 
+  mutate(price = as.numeric(price)) %>% 
+  count(CountryCode) %>% 
+  rename('Country Code' = CountryCode, Count = n) #%>% 
+  #write.csv('C:\\Users\\15712\\Desktop\\top_companies_country.csv', 
+  #          row.names = FALSE)
+
+companies_cap <- top_foundries %>% 
+  mutate(marketcap = as.numeric(marketcap)) %>% 
+  group_by(CountryCode) %>% 
+  summarise(cap = sum(marketcap)) #%>% 
+  #write.csv('C:\\Users\\15712\\Desktop\\companies_marketcap.csv')
